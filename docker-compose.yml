@@ -1,0 +1,27 @@
+services:
+  # Main application container (persistent for faster execution)
+  daily-it-news:
+    build: .
+    container_name: daily-it-news
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/app/logs
+    environment:
+      - TZ=Europe/Stockholm
+    # Keep container running for faster execution
+    command: ["tail", "-f", "/dev/null"]
+
+  # Scheduler container
+  scheduler:
+    build: ./scheduler
+    container_name: daily-it-news-scheduler
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - .:/app
+      - ./logs:/app/logs
+    environment:
+      - TZ=Europe/Stockholm
+    working_dir: /app 
