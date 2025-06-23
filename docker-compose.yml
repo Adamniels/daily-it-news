@@ -1,5 +1,5 @@
 services:
-  # Main application container (persistent for faster execution)
+  # Single container with scheduler and Python app
   daily-it-news:
     build: .
     container_name: daily-it-news
@@ -8,20 +8,8 @@ services:
       - .env
     volumes:
       - ./logs:/app/logs
+      - ./scheduler:/app/scheduler
     environment:
       - TZ=Europe/Stockholm
-    # Keep container running for faster execution
-    command: ["tail", "-f", "/dev/null"]
-
-  # Scheduler container
-  scheduler:
-    build: ./scheduler
-    container_name: daily-it-news-scheduler
-    restart: unless-stopped
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - .:/app
-      - ./logs:/app/logs
-    environment:
-      - TZ=Europe/Stockholm
-    working_dir: /app 
+    # Run the scheduler directly
+    command: [ "bash", "/app/scheduler/scheduler.sh" ]

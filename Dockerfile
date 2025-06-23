@@ -15,6 +15,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY app/ ./app/
 
+# Copy scheduler script
+COPY scheduler/scheduler.sh ./scheduler/scheduler.sh
+RUN chmod +x ./scheduler/scheduler.sh
+
 # Create logs directory
 RUN mkdir -p /app/logs
 

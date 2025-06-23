@@ -10,8 +10,8 @@ echo ""
 run_daily_task() {
     echo "$(date): Starting daily IT news task..."
     
-    # Execute command in the existing container (much faster)
-    docker-compose exec daily-it-news python /app/app/main.py
+    # Run Python script directly (much simpler!)
+    cd /app && python app/main.py
     
     if [ $? -eq 0 ]; then
         echo "$(date): Daily task completed successfully"
